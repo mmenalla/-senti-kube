@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pkl
+*.egg-info/
+*.log
+
+# Jupyter and notebooks
+.ipynb_checkpoints/
+
+# Environments
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+
+# VSCode
+.vscode/
+
+# PyCharm
+.idea/
+
+# Unit test cache
+.pytest_cache/
+.tox/
+.coverage
+htmlcov/
+coverage.xml
+
+# FastAPI logs
+*.db
+*.sqlite3
+
+# Docker
+*.tar
+*.img
+*.log
+docker-compose.override.yml
+
+# Model artifacts
+app/model/*.pkl
+
+# Misc
+.DS_Store
+*.swp
