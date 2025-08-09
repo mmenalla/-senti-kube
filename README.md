@@ -45,3 +45,77 @@ make predict
 ```bash
 http://localhost:8000/docs
 ```
+```
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{"text": "I love this product!"}'
+
+```
+
+
+## Deploy and Run on minikube
+```
+brew install minikube
+minikube start --driver=docker
+```
+
+Use Local Docker for Building Images
+Tell Kubernetes to use the local Docker daemon so you don’t have to push to a remote registry every time:
+
+````
+eval $(minikube docker-env)
+````
+
+Now, when you run:
+```
+docker build -t sentikube:latest .
+```
+the image will be available directly inside Minikube.
+
+```
+kubectl apply -f ....yaml
+kubectl port-forward svc/sentikube-service 8000:80
+
+kubectl apply -f configmap.yaml
+kubectl rollout restart deployment sentikube-deployment
+```
+```
+http://localhost:8000/docs
+```
+```
+echo -n "secret_api_key" | base64
+echo -n "c2VjcmV0X2FwaV9rZXk=" | base64 --decode
+```
+
+Horizontal Pod Autoscaler
+Check the status of the Horizontal Pod Autoscaler:
+```
+kubectl get hpa sentikube-hpa
+```
+
+To test autoscaling, enable metrics-server in Minikube:
+```bash
+minikube addons enable metrics-server
+```
+Stress Test with Hey
+```
+brew install hey
+```
+```
+hey -z 1m -c 20 -m POST -H "Content-Type: application/json" -d '{"text":"I love this product!"}' http://localhost:8000/predict
+```
+
+
+#### RBAC: Roles and RoleBindings
+RBAC controls what actions the SA can perform on which resources in the cluster.
+
+### Ingress Controller addon to minukube cluster 
+```
+minikube addons enable ingress
+```
+
+Check:
+```
+kubectl port-forward -n ingress-nginx svc/ingress-nginx-controller 8080:80
+curl -H "Host: sentikube.local" http://localhost:8080/docs
+```

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sentikube-config
+data:
+  MODEL_PATH: "/app/model/sentiment_model.pkl"
+  SERVER_HOST: "0.0.0.0"
+  SERVER_PORT: "8000"
+  UVICORN_WORKERS: "2"
+  LOG_LEVEL: "info"
+  APP_NAME: "SentiKube Sentiment API"
+
+
